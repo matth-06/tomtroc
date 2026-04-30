@@ -16,8 +16,8 @@ body {
 
 main {
     /* padding: 0 1.5rem 4rem; */
-    max-width: 1280px;
-    margin: 0 auto;
+    /* max-width: 1280px;
+    margin: 0 auto; */
     background-color: transparent;
     box-shadow: none;
 }
@@ -39,6 +39,7 @@ main {
 
 .hero-copy {
     max-width: 540px;
+    padding: 0 0 0 40%;
 }
 
 .eyebrow {
@@ -63,6 +64,13 @@ main {
     color: #4a4a4a;
     line-height: 1.8;
     font-size: 1rem;
+}
+
+.hero-credit {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #767676;
+    text-align: center;
 }
 
 .btn {
@@ -98,26 +106,17 @@ main {
     background-color: var(--green--color);
 }
 
-.hero-credit {
-    margin: 0;
-    font-size: 0.9rem;
-    color: #767676;
-    text-align: center;
-}
-
 .books-section {
     background-color: #ffffff;
     border-radius: 30px;
     margin: 0 auto;
     padding: 4rem 2rem;
-    width: 100%;
 }
 .steps-section,
 .values-section {
     border-radius: 30px;
     margin: 0 auto;
     padding: 4rem 2rem;
-    width: 100%;
 }
 .books-section {
     margin-top: 2.5rem;
@@ -219,6 +218,10 @@ main {
     font-size: 0.98rem;
     line-height: 1.7;
     box-shadow: 0 18px 50px rgba(0,0,0,0.05);
+}
+
+.band-graphic {
+    width: 100%;
 }
 
 .values-section {
