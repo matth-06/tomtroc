@@ -27,6 +27,9 @@ try {
         case 'messagerie':
             $controller->render('messagerie');
             break;
+        case 'signup':
+            $controller->render('signup');
+            break;
     }
 } catch (Exception $e) {
     // Gérer les exceptions ici, par exemple en affichant une page d'erreur.
