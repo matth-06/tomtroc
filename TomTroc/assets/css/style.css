@@ -303,15 +303,35 @@ main {
     background-color: #fff;
 }
 
+.login {
+    background-color: #f0efed;
+}
 .login-form {
     display: flex;
     flex-direction: column;
     max-width: 322px;
 }
 
-.login-form label,
+.login-form h2 {
+    margin: 0 0 20px;
+    font-size: 2.5rem;
+}
+
+.login-form label {
+    margin-top: 20px;
+}
 .login-form input {
     margin-top: 10px;
+    outline: none;
+    border: 1px solid #ddd;
+    height: 50px;
+}
+
+.login-form input:focus {
+    border-color: #aaa;
+}
+.login-btn {
+    margin-top: 30px;
 }
 /* @media (max-width: 980px) {
     header {
