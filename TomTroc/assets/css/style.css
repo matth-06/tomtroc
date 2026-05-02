@@ -333,6 +333,9 @@ main {
 .login-btn {
     margin-top: 30px;
 }
+.login-link {
+    color: var(--dark--grey--color);
+}
 /* @media (max-width: 980px) {
     header {
         flex-wrap: wrap;

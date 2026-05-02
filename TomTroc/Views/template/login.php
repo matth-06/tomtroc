@@ -10,6 +10,8 @@
             <label for="password">Mot de passe</label>
             <input type="password" name="password" id="password" required>
             <a class="btn btn-primary login-btn">S'inscrire</a>
+            <p>Pas de compte ? <a class="login-link" href="index.php?action=signup">Inscrivez-vous</a></p>
+            
         </div>
         
     </form>
