@@ -29,7 +29,8 @@ main {
     padding: 4rem 0;
 }
 
-.hero{
+.hero,
+.login {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(340px, 1fr);
     gap: 3rem;
@@ -37,7 +38,7 @@ main {
     padding-top: 3rem;
 }
 
-.hero-copy {
+.hero-copy, .login-form {
     max-width: 540px;
     padding: 0 0 0 40%;
 }
@@ -300,6 +301,17 @@ main {
     max-width: 50%;
     padding: 20px;
     background-color: #fff;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 322px;
+}
+
+.login-form label,
+.login-form input {
+    margin-top: 10px;
 }
 /* @media (max-width: 980px) {
     header {
