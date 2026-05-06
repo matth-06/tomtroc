@@ -136,7 +136,10 @@ main {
     display: grid;
     gap: 1.5rem;
 }
-
+.search-books {
+    margin-left: 10%;
+    margin-right: 10%;
+}
 .books-grid {
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
 }
@@ -332,6 +335,7 @@ main {
 }
 .login-btn {
     margin-top: 30px;
+    border: none;
 }
 .login-link {
     color: var(--dark--grey--color);
@@ -383,6 +387,8 @@ header {
     display: flex;
     justify-content: space-between; /* gauche - centre - droite */
     align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .header-logo {
