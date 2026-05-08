@@ -107,6 +107,10 @@ main {
     background-color: var(--green--color);
 }
 
+button {
+    border: none;
+}
+
 .books-section {
     background-color: #ffffff;
     border-radius: 30px;
@@ -142,6 +146,8 @@ main {
 }
 .books-grid {
     grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    margin-left: 10%;
+    margin-right: 10%;
 }
 
 .books-grid a {
@@ -255,12 +261,13 @@ main {
     align-items: right;
 }
 
+/* LivreEx*/
 
 .search-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 30px;
+    padding: 30px 0;
 }
 
 .search-header h1 {
@@ -280,7 +287,7 @@ main {
 .search-bar input:focus {
     border-color: #aaa;
 }
-
+/* Book Detail */
 .book-detail {
     display: flex;
     gap: 40px;
@@ -305,7 +312,7 @@ main {
     padding: 20px;
     background-color: #fff;
 }
-
+/* Login */
 .login {
     background-color: #f0efed;
 }
@@ -340,49 +347,11 @@ main {
 .login-link {
     color: var(--dark--grey--color);
 }
-/* @media (max-width: 980px) {
-    header {
-        flex-wrap: wrap;
-        padding: 1rem 2rem;
-    }
 
-    .hero {
-        grid-template-columns: 1fr;
-    }
-
-    .values-section {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 720px) {
-    .hero {
-        gap: 2rem;
-    }
-
-    header {
-        gap: 1rem;
-    }
-
-    .books-section,
-    .steps-section,
-    .values-section {
-        padding: 3rem 1.25rem;
-        border-radius: 24px;
-    }
-
-    .hero-image {
-        min-height: 340px;
-    }
-
-    .btn {
-        width: 100%;
-    }
-} */
-
+/* layout */
 header {
     background-color: var(--light--grey--color);
-    padding: 1rem 4rem;
+    padding: 1rem 0px;
 
     display: flex;
     justify-content: space-between; /* gauche - centre - droite */
