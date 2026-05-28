@@ -75,13 +75,25 @@ class User
         }
 
         if ($newAvatar && $newAvatar['error'] === UPLOAD_ERR_OK) {
-        $extension = pathinfo($newAvatar['name'], PATHINFO_EXTENSION);
-        $filename = $userId . '_' . time() . '.' . $extension; // nom unique
-        $avatarPath = 'assets/users/' . $filename;
+            $currentUser = self::findById($userId);
+            $currentAvatar = $currentUser['avatar'] ?? null;
+
+            $extension = pathinfo($newAvatar['name'], PATHINFO_EXTENSION);
+            $filename = $userId . '_' . time() . '.' . $extension; // nom unique
+            $uploadDir = __DIR__ . '/../assets/users/';
+            $avatarPath = $uploadDir . $filename;
+            $avatarUrl = 'assets/users/' . $filename;
 
             if (move_uploaded_file($newAvatar['tmp_name'], $avatarPath)) {
                 $stmt = $pdo->prepare('UPDATE user SET avatar = ? WHERE id = ?');
-                $stmt->execute([$avatarPath, $userId]);
+                $stmt->execute([$avatarUrl, $userId]);
+
+                if ($currentAvatar && $currentAvatar !== 'assets/users/default-avatar.png') {
+                    $oldAvatarFile = __DIR__ . '/../' . $currentAvatar;
+                    if (file_exists($oldAvatarFile)) {
+                        unlink($oldAvatarFile);
+                    }
+                }
 
                 return true;
             }
