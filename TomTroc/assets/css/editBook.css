@@ -1,0 +1,175 @@
+/* === Back Link === */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: #555;
+    text-decoration: none;
+    margin-bottom: 20px;
+    letter-spacing: 0.01em;
+}
+
+.back-link::before {
+    content: '←';
+}
+
+.back-link:hover {
+    color: #111;
+}
+
+
+/* === Card Container === */
+.edit-book-section {
+    margin-left: 10%;
+    margin-right: 10%;
+}
+.edit-book {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 40px 48px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+}
+
+/* Make the h1 span full width above the card */
+/* If h1 is outside the card, no changes needed. 
+   If inside, use: */
+.edit-book > h1 {
+    grid-column: 1 / -1;
+}
+
+/* === Left Column: Photo === */
+.photo-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.photo-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 0.04em;
+    text-transform: none;
+}
+
+.book-thumb {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+.change-photo-link {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    color: #333;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    width: fit-content;
+    margin-top: 4px;
+}
+
+.change-photo-link:hover {
+    color: #000;
+}
+
+/* === Right Column: Form === */
+.form-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 12px;
+    color: #888;
+    letter-spacing: 0.04em;
+}
+
+/* === Inputs & Textarea === */
+.form-group input[type="text"],
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    background-color: #f5f3ef;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    color: #2c2c2c;
+    outline: none;
+    transition: background 0.15s ease;
+    appearance: none;
+    -webkit-appearance: none;
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    background-color: #ede9e2;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 200px;
+    line-height: 1.65;
+}
+
+/* === Select with arrow === */
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper select {
+    padding-right: 40px;
+    cursor: pointer;
+}
+
+.select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 6px;
+    background-color: #555;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    pointer-events: none;
+}
+
+
+/* === File input hidden (replaced by "Modifier la photo") === */
+input[type="file"] {
+    display: none;
+}
+
+/* === Responsive === */
+@media (max-width: 700px) {
+    body {
+        padding: 20px 16px;
+    }
+
+    .edit-book {
+        grid-template-columns: 1fr;
+        padding: 24px 20px 32px;
+        gap: 28px;
+    }
+}

@@ -1,100 +1,102 @@
-<?php 
-require_once 'Models/DBManager.php';
+<?php
 
-class UserController {
-    public function registerUser($pseudo, $email, $password) {
-        $dbManager = DBManager::getInstance();
-        $pdo = $dbManager->getPDO();
+require_once __DIR__ . '/Controller.php';
+require_once __DIR__ . '/../Models/User.php';
+require_once __DIR__ . '/../Models/Book.php';
 
-        // Vérifier si utilisateur existe
-        $stmt = $pdo->prepare("SELECT id FROM user WHERE mail = ? OR nickname = ?");
-        $stmt->execute([$email, $pseudo]);
+class UserController extends Controller
+{
+    public function showLogin(?string $errorMessage = null): void
+    {
+        $title = 'Connexion';
+        $this->render('template/login.php', compact('title', 'errorMessage'));
+    }
 
-        if ($stmt->fetch()) {
-            return "Utilisateur déjà existant";
+    public function showSignup(?string $errorMessage = null, array $oldData = []): void
+    {
+        $title = 'Inscription';
+        $this->render('template/signup.php', compact('title', 'errorMessage', 'oldData'));
+    }
+
+    public function register(string $pseudo, string $email, string $password): void
+    {
+        $result = User::create(trim($pseudo), trim($email), trim($password));
+
+        if ($result === true) {
+            header('Location: index.php?action=login');
+            exit();
         }
 
-        // Hash du mot de passe
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        // Insertion
-        $stmt = $pdo->prepare("INSERT INTO user (nickname, mail, password) VALUES (?, ?, ?)");
-        $stmt->execute([$pseudo, $email, $hashedPassword]);
-
-        return true;
+        $this->showSignup($result, ['pseudo' => $pseudo, 'email' => $email]);
     }
-    
-    public function connectUser($email, $password) {
-        $dbManager = DBManager::getInstance();
-        $pdo = $dbManager->getPDO();
 
-        // Récupérer l'utilisateur
-        $stmt = $pdo->prepare("SELECT id, nickname, mail, password FROM user WHERE mail = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch();
+    public function connect(string $email, string $password): void
+    {
+        $user = User::findByEmail(trim($email));
 
         if (!$user || !password_verify($password, $user['password'])) {
-            return "Email ou mot de passe incorrect";
+            $this->showLogin('Email ou mot de passe incorrect');
+            return;
         }
 
-        // Démarrer la session et stocker l'ID de l'utilisateur
-        session_start();
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['pseudo'] = $user['nickname'];
         $_SESSION['email'] = $user['mail'];
-        $_SESSION['password'] = $password;
+        $_SESSION['avatar'] = $user['avatar'] ?? null;
 
-        return true;
+        header('Location: index.php?action=monCompte');
+        exit();
     }
 
-    public function getBookById($userId) {
-        $dbManager = DBManager::getInstance();
-        $pdo = $dbManager->getPDO();
-
-        $stmt = $pdo->prepare("SELECT * FROM livre WHERE propriétaireid = (SELECT id FROM user WHERE id = ?)");
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll();
-    }
-
-     public function getBookCountByUserId($userId) {
-        $dbManager = DBManager::getInstance();
-        $pdo = $dbManager->getPDO();
- 
-        $stmt = $pdo->prepare("SELECT COUNT(*) AS total FROM livre WHERE propriétaireid = ?");
-        $stmt->execute([$userId]);
-        $result = $stmt->fetch();
-        return (int) $result['total'];
-    }
-
-    public function updateUser($userId, $newEmail, $newPseudo, $newPassword) {
-        $dbManager = DBManager::getInstance();
-        $pdo = $dbManager->getPDO();
- 
-        // Vérifier que l'email ou le pseudo ne sont pas déjà pris par un autre utilisateur
-        $stmt = $pdo->prepare("SELECT id FROM user WHERE (mail = ? OR nickname = ?) AND id != ?");
-        $stmt->execute([$newEmail, $newPseudo, $userId]);
-        if ($stmt->fetch()) {
-            return "Cet email ou pseudo est déjà utilisé par un autre compte.";
+    public function account(?string $successMessage = null, ?string $errorMessage = null): void
+    {
+        if (empty($_SESSION['user_id'])) {
+            header('Location: index.php?action=login');
+            exit();
         }
- 
-        // Mise à jour email + pseudo
-        $stmt = $pdo->prepare("UPDATE user SET mail = ?, nickname = ? WHERE id = ?");
-        $stmt->execute([$newEmail, $newPseudo, $userId]);
-        $stmt = $pdo->prepare("UPDATE livre SET propriétaire = ? WHERE propriétaireid = ?");
-        $stmt->execute([$newPseudo, $userId]);
- 
-        // Mise à jour du mot de passe uniquement si un nouveau est fourni
-        if (!empty($newPassword)) {
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("UPDATE user SET password = ? WHERE id = ?");
-            $stmt->execute([$hashedPassword, $userId]);
+
+        $user = User::findById((int)$_SESSION['user_id']);
+        $books = Book::findByUser((int)$_SESSION['user_id']);
+        $bookCount = count($books);
+        $title = 'Mon compte';
+
+        $this->render('template/monCompte.php', compact('title', 'user', 'books', 'bookCount', 'successMessage', 'errorMessage'));
+    }
+
+    public function updateProfile(array $post): void
+    {
+        if (empty($_SESSION['user_id'])) {
+            header('Location: index.php?action=login');
+            exit();
         }
- 
-        // Mettre à jour la session avec les nouvelles valeurs
-        $_SESSION['email']  = $newEmail;
-        $_SESSION['pseudo'] = $newPseudo;
- 
-        return true;
+
+        $newEmail = trim($post['email'] ?? '');
+        $newPseudo = trim($post['pseudo'] ?? '');
+        $newPassword = trim($post['password'] ?? '');
+        $newAvatar = $_FILES['avatar'] ?? null;
+
+        if (empty($newEmail) || empty($newPseudo)) {
+            $this->account(null, "L'email et le pseudo sont obligatoires.");
+            return;
+        }
+
+        if (!filter_var($newEmail, FILTER_VALIDATE_EMAIL)) {
+            $this->account(null, "L'adresse email n'est pas valide.");
+            return;
+        }
+
+        $result = User::update((int)$_SESSION['user_id'], $newEmail, $newPseudo, $newPassword, $newAvatar);
+
+        if ($result === true) {
+            // Recharger l'utilisateur pour récupérer les champs mis à jour (avatar notamment)
+            $user = User::findById((int)$_SESSION['user_id']);
+            $_SESSION['email'] = $user['mail'] ?? $newEmail;
+            $_SESSION['pseudo'] = $user['nickname'] ?? $newPseudo;
+            $_SESSION['avatar'] = $user['avatar'] ?? ($_SESSION['avatar'] ?? null);
+            $this->account('Vos informations ont bien été mises à jour.', null);
+            return;
+        }
+
+        $this->account(null, $result);
     }
 }
-?>

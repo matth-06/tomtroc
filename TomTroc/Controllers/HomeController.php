@@ -1,24 +1,19 @@
 <?php
-require_once 'Models/HomeModel.php';
 
-class HomeController {
-    public function index() {
-        
+require_once __DIR__ . '/Controller.php';
+require_once __DIR__ . '/../Models/Book.php';
+
+class HomeController extends Controller
+{
+    public function index(): void
+    {
         $title = 'Accueil';
-        ob_start();
-        include 'Views/home.php';
-        $content = ob_get_clean();
-        
-        require_once 'Views/layout.php';
+        $latestBooks = Book::getLatest(4);
+        $this->render('home.php', compact('title', 'latestBooks'));
     }
 
-    public function render(string $viewName) : void 
-    { 
-        ob_start();
-        require('Views/template/' . $viewName . '.php');
-        $content = ob_get_clean();
-
-        require 'Views/layout.php';
+    public function renderPage(string $view, array $params = []): void
+    {
+        $this->render($view, $params);
     }
 }
-?>

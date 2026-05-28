@@ -1,68 +1,98 @@
 <?php
 require_once 'Controllers/HomeController.php';
 require_once 'Controllers/UserController.php';
+require_once 'Controllers/BookController.php';
+require_once 'Controllers/MessageController.php';
 
+session_start();
 $action = $_GET['action'] ?? 'default';
 
-$controller = new HomeController();
 try {
     switch ($action) {
         case 'default':
+        case 'accueil':
+            $controller = new HomeController();
             $controller->index();
             break;
-        case 'accueil':
-            $controller->index('home');
-            break;
         case 'livreEx':
-            $controller->render('livreEx');
+            $controller = new BookController();
+            $controller->index($_GET['search'] ?? '');
             break;
         case 'showBook':
-            $controller->render('detailLivre');
+            $controller = new BookController();
+            $controller->show((int)($_GET['id'] ?? 0));
             break;
         case 'login':
-            $controller->render('login');
-            break;
-        case 'monCompte':
-            $controller->render('monCompte');
-            break;
-        case 'messagerie':
-            $controller->render('messagerie');
+            $controller = new UserController();
+            $controller->showLogin();
             break;
         case 'signup':
-            $controller->render('signup');
+            $controller = new UserController();
+            $controller->showSignup();
+            break;
+        case 'monCompte':
+            $controller = new UserController();
+            $controller->account();
+            break;
+        case 'messagerie':
+            $controller = new MessageController();
+            $controller->messagerie((int)($_GET['user_id'] ?? null));
+            break;
+        case 'envoyer_message':
+            $controller = new MessageController();
+            $controller->messagerie((int)($_GET['user_id'] ?? null));
+            break;
+        case 'sendMessage':
+            $controller = new MessageController();
+            $controller->sendMessage(
+                (int)($_GET['receiver_id'] ?? 0),
+                $_POST['content'] ?? ''
+            );
             break;
         case 'registerUser':
-            $pseudo = $_POST['pseudo'] ?? '';
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
-
-            $userController = new UserController();
-            $result = $userController->registerUser($pseudo, $email, $password);
-
-            if ($result === true) {
-                header('Location: index.php?action=login');
-            } else {
-                // Gérer l'erreur d'enregistrement
-                echo $result;
-            }
+            $controller = new UserController();
+            $controller->register(
+                $_POST['pseudo'] ?? '',
+                $_POST['email'] ?? '',
+                $_POST['password'] ?? ''
+            );
             break;
-        
         case 'connectUser':
-            $email = $_POST['email'] ?? '';
-            $password = $_POST['password'] ?? '';
-
-            $userController = new UserController();
-            $result = $userController->connectUser($email, $password);
-
-            if ($result === true) {
-                header('Location: index.php?action=monCompte');
-            } else {
-                // Gérer l'erreur de connexion
-                echo $result;
-            }
+            $controller = new UserController();
+            $controller->connect(
+                $_POST['email'] ?? '',
+                $_POST['password'] ?? ''
+            );
+            break;
+        case 'updateProfile':
+            $controller = new UserController();
+            $controller->updateProfile($_POST);
+            break;
+        case 'ajoutLivre':
+            $controller = new BookController();
+            $controller->createForm();
+            break;
+        case 'addBook':
+            $controller = new BookController();
+            $controller->store($_POST, $_FILES, $_SESSION['user_id'] ?? 0);
+            break;
+        case 'edit':
+            $controller = new BookController();
+            $controller->editForm((int)($_GET['id'] ?? 0));
+            break;
+        case 'updateBook':
+            $controller = new BookController();
+            $controller->update((int)($_GET['id'] ?? 0), $_POST, $_FILES);
+            break;
+        case 'delete':
+            $controller = new BookController();
+            $controller->delete((int)($_GET['id'] ?? 0));
+            break;
+        default:
+            $controller = new HomeController();
+            $controller->index();
             break;
     }
 } catch (Exception $e) {
-    // Gérer les exceptions ici, par exemple en affichant une page d'erreur.
-    echo "Une erreur est survenue : " . $e->getMessage();
+    echo 'Une erreur est survenue : ' . $e->getMessage();
 }

@@ -1,20 +1,18 @@
-<?php
-?>
-
 <div class="login">
     <form action="index.php?action=connectUser" method="post" class="foldedCorner">
         <div class="login-form">
             <h2>Connexion</h2>
+            <?php if (!empty($errorMessage)): ?>
+                <div class="alert alert-error"><?= htmlspecialchars($errorMessage) ?></div>
+            <?php endif; ?>
             <label for="email">Adresse email</label>
             <input type="email" name="email" id="email" required>
             <label for="password">Mot de passe</label>
             <input type="password" name="password" id="password" required>
             <button class="btn btn-primary login-btn" type="submit">Se connecter</button>
             <p>Pas de compte ? <a class="login-link" href="index.php?action=signup">Inscrivez-vous</a></p>
-            
         </div>
-        
     </form>
     <div class="login-media">
-            <img src="assets/login/logImg.svg" alt="signup" class="signup-image">
-        </div>
+        <img src="assets/login/logImg.svg" alt="signup" class="signup-image">
+    </div>

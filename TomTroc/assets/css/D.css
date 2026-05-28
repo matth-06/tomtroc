@@ -1,0 +1,77 @@
+
+/* Subtle vignette overlay */
+.image-detail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    transparent 70%,
+    rgba(247, 245, 240, 0.18) 100%
+  );
+  pointer-events: none;
+}
+
+/* ── Right: content panel ── */
+
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Title ── */
+.content-detail h1 {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.15;
+  color: var(--ink);
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+
+/* Decorative rule */
+.content-detail h1 + .book-author::before {
+  content: '';
+  display: block;
+  width: 36px;
+  height: 1px;
+  background: var(--bark);
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+/* ── Owner ── */
+.owner-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--sand);
+  flex-shrink: 0;
+}
+
+/* Fallback avatar initials */
+.owner-avatar-placeholder {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-color: var(--sand);
+  border: 2px solid var(--bark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--bark);
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+

@@ -1,3 +1,5 @@
+@import url(editBook.css);
+
 :root {
     --green--color: #00AC66;
     --light--grey--color: #F5F3EF;
@@ -121,7 +123,7 @@ button {
 .values-section {
     border-radius: 30px;
     margin: 0 auto;
-    padding: 4rem 2rem;
+    padding: 4rem 10rem;
 }
 .books-section {
     margin-top: 2.5rem;
@@ -181,21 +183,43 @@ button {
 }
 
 .book-author {
-    margin: 0;
-    color: var(--grey--color);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    margin-bottom: 28px;
+    color: rgb(46, 46, 46);
 }
 
 .book-seller {
-    margin: 1rem 0 0;
-    color: var(--grey--color);
-    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 44px;
+    font-size: 0.9rem;
+    color: var(--ink);
+    font-weight: 400;
 }
 
 .book-description {
-    margin: 1rem 0 0;
-    color: var(--dark--grey--color);
-    line-height: 1.6;
-    font-size: 0.95rem;
+    font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.85;
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--sand);
+
+}
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+  display: block;
 }
 
 .books-actions {
@@ -289,28 +313,34 @@ button {
 }
 /* Book Detail */
 .book-detail {
-    display: flex;
-    gap: 40px;
-    padding: 30px;
-    background-color: #fff;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 45px);
 }
 .image-detail {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 30px;
-    max-width: 50%;
+    position: relative;
+    overflow: hidden;
 }
 
 .image-detail img {
-    max-width: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s ease;
+}
+.image-detail:hover img {
+  transform: scale(1.03);
 }
 
+
 .content-detail {
-    max-width: 50%;
-    padding: 20px;
-    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 72px 72px 64px;
+    background-color: var(--cream);
+    animation: fadeSlideIn 0.7s ease both;
 }
 /* Login */
 .login {
@@ -346,6 +376,15 @@ button {
 }
 .login-link {
     color: var(--dark--grey--color);
+}
+
+.owner-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--sand);
+  flex-shrink: 0;
 }
 
 /* layout */
@@ -398,3 +437,4 @@ footer {
     display: flex;
     gap: 2rem; /* espace entre les textes */
 }
+

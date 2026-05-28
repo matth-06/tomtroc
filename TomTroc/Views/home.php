@@ -1,15 +1,7 @@
-<?php
-require_once 'Models/DBManager.php';
-
-$dbManager = DBManager::getInstance();
-$query = $dbManager->query("SELECT * FROM livre ORDER BY id DESC LIMIT 4;");
-$results = $query->fetchAll();
-?>
-
 <section class="hero">
     <div class="hero-copy">
-        <h1><?php echo 'Rejoignez nos <br />
-        lecteurs passionnés'; ?></h1>
+        <h1>Rejoignez nos <br />
+            lecteurs passionnés</h1>
         <p class="hero-text">Donnez une nouvelle vie à vos livres en les échangeant avec d'autres amoureux de la lecture. Nous croyons en la magie du partage de connaissances et d'histoires à travers les livres.</p>
         <a href="index.php?action=livreEx" class="btn btn-primary">Découvrir</a>
     </div>
@@ -22,14 +14,14 @@ $results = $query->fetchAll();
 <section class="books-section">
     <h2>Les derniers livres ajoutés</h2>
     <div class="books-grid">
-        <?php foreach ($results as $result): ?>
+        <?php foreach ($latestBooks as $book): ?>
             <article class="book-card">
-                <a href="index.php?action=showBook&id=<?= $result['id'] ?>">
-                    <img src="<?= $result['image'] ?>" alt="<?= $result['titre'] ?>">
+                <a href="index.php?action=showBook&id=<?= $book['id'] ?>">
+                    <img src="assets/book/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['titre']) ?>">
                     <div class="book-content">
-                        <h3><?= $result['titre'] ?></h3>
-                        <p class="book-author"><?= $result['auteur'] ?></p>
-                        <p class="book-seller">Vendu par : <?= $result['propriétaire'] ?></p>
+                        <h3><?= htmlspecialchars($book['titre']) ?></h3>
+                        <p class="book-author"><?= htmlspecialchars($book['auteur']) ?></p>
+                        <p class="book-seller">Vendu par : <?= htmlspecialchars($book['propriétaire']) ?></p>
                     </div>
                 </a>
             </article>
@@ -56,13 +48,12 @@ $results = $query->fetchAll();
 </section>
 <img src="assets/home/band.svg" alt="" class="band-graphic">
 <section class="values-section">
-
     <div class="values-copy">
         <h2>Nos valeurs</h2>
         <p>Chez Tom Troc, nous mettons l'accent sur le partage, la découverte et la communauté. Nos valeurs sont ancrées dans notre passion pour les livres et notre désir de créer des liens entre les lecteurs. Nous croyons en la puissance des histoires pour rassembler les gens et inspirer des conversations enrichissantes.</p>
         <p>Notre association a été fondée avec une conviction profonde : chaque livre mérite d'être lu et partagé.</p>
         <p>Nous sommes passionnés par la création d'une plateforme conviviale qui permet aux lecteurs de se connecter, de partager leurs découvertes littéraires et d'échanger des livres qui attendent patiemment sur les étagères.</p>
-        <p class="signature">L’équipe Tom Troc </p>
+        <p class="signature">L’équipe Tom Troc</p>
         <div class="values-graphic">
             <img src="assets/home/heart.svg" alt="" class="values-illustration">
         </div>

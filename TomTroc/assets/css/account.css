@@ -86,6 +86,11 @@
   font-size: 14px;
   color: #1a1a1a;
 }
+.modifier {
+  color: #888;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 /* ===== FORMULAIRE DROITE ===== */
 .account-actions h2 {
@@ -174,4 +179,39 @@
   font-weight: 500;
   background: #E1F5EE;
   color: #0F6E56;
+}
+.badge-indispo {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: #FFEDED;
+  color: #993C1D;
+}
+
+/* ===== ACTIONS TABLE ===== */
+.btn-edit {
+  font-size: 13px;
+  color: #666;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-right: 12px;
+}
+
+.btn-delete {
+  font-size: 13px;
+  color: #993C1D;
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.addBook{
+  margin: 1.5rem 43%;
 }
