@@ -106,7 +106,7 @@
 .form-group input[type="text"],
 .form-group textarea,
 .form-group select {
-    width: 100%;
+    /* width: 100%; */
     background-color: #f5f3ef;
     border: none;
     border-radius: 10px;
@@ -135,6 +135,17 @@
 /* === Select with arrow === */
 .select-wrapper {
     position: relative;
+}
+
+/* Ensure the select and its wrapper span the full width like inputs/textarea */
+.select-wrapper,
+.select-wrapper select {
+    width: 100%;
+}
+
+.select-wrapper select {
+    box-sizing: border-box;
+    display: block;
 }
 
 .select-wrapper select {

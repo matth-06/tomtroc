@@ -5,7 +5,7 @@
     <section class="edit-book">
         <div class="photo-section">
             <span class="photo-label">Photo</span>
-            <?php if (!empty($book['image'])): ?>
+            <?php if (empty($book['preview_image'])): ?>
                 <img src="assets/book/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['titre']) ?>" class="book-thumb">
             <?php endif; ?>
             <div class="form-group">

@@ -15,7 +15,8 @@
   --text-primary:  #1a1a1a;
   --text-secondary:#6b6560;
   --text-muted:    #9e9890;
-  --bubble-sent:   #dde8e0;
+  /* --bubble-sent:   #dde8e0; */
+  --bubble-sent:   #dbeeff;
   --bubble-recv:   #ffffff;
   --accent:        #2e9e68;
   --accent-hover:  #268a5a;

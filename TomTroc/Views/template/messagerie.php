@@ -9,10 +9,20 @@
                     <?php foreach ($conversations as $conversation): ?>
                         <li class="conversation-item <?= isset($currentConversation) && $currentConversation['id'] == $conversation['id'] ? 'active' : '' ?>">
                             <a href="index.php?action=messagerie&user_id=<?= (int)$conversation['id'] ?>">
-
-                                <span class="user-name"><img src="<?= !empty($conversation['avatar']) ? htmlspecialchars($conversation['avatar']) : 'assets/users/default-avatar.png' ?>"
+                                <div class="user-name">
+                                    <img src="<?= !empty($conversation['avatar']) ? htmlspecialchars($conversation['avatar']) : 'assets/users/default-avatar.png' ?>"
                                         alt="Photo de profil"
-                                        class="owner-avatar"><?= htmlspecialchars($conversation['nickname']) ?></span>
+                                        class="owner-avatar">
+                                    <div class="conv-info">
+                                        <div style="display:flex; align-items:center; gap:8px; width:100%">
+                                            <div class="conv-name"><?= htmlspecialchars($conversation['nickname']) ?></div>
+                                            <?php if (!empty($conversation['last_time'])): ?>
+                                                <div class="conv-time" style="margin-left:auto; font-size:0.75rem; color:var(--text-muted)"><?= date('H:i', strtotime($conversation['last_time'])) ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <div class="conv-preview"><?= htmlspecialchars(mb_strimwidth($conversation['last_message'], 0, 60, '...')) ?></div>
+                                    </div>
+                                </div>
                             </a>
                         </li>
                     <?php endforeach; ?>
@@ -35,10 +45,10 @@
                         <?php foreach ($messages as $message): ?>
                             <div class="message-item <?= $message['sender_id'] === $_SESSION['user_id'] ? 'sent' : 'received' ?>">
                                 <div class="message-content">
-                                    <p><?= htmlspecialchars($message['content']) ?></p>
                                     <span class="message-time">
                                         <?= date('d/m/Y H:i', strtotime($message['created_at'])) ?>
                                     </span>
+                                    <p><?= htmlspecialchars($message['content']) ?></p>
                                 </div>
                             </div>
                         <?php endforeach; ?>
