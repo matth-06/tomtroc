@@ -1,3 +1,17 @@
+<?php
+$memberSince = $_SESSION['member_since'] ?? null;
+
+if ($memberSince) {
+    $start = new DateTime($memberSince);
+    $today = new DateTime();
+
+    $diff = $start->diff($today);
+
+    $anciennete = "{$diff->y} an(s) {$diff->m} mois {$diff->d} jour(s)";
+} else {
+    $anciennete = '—';
+}
+?>
 <link rel="stylesheet" href="assets/css/account.css">
 
 <section class="account-section">
@@ -15,7 +29,7 @@
                 </div>
             <div class="separator"></div>
             <span class="username"><?= htmlspecialchars($user['nickname'] ?? ($_SESSION['pseudo'] ?? 'Utilisateur')) ?></span>
-            <span class="member-since">Membre depuis <?= htmlspecialchars($_SESSION['member_since'] ?? '—') ?></span>
+            <span class="member-since"> Membre depuis <?= htmlspecialchars($anciennete) ?> </span>
             <div class="library-block">
                 <div class="lib-label">Bibliothèque</div>
                 <div class="lib-count">📚 <?= htmlspecialchars($bookCount ?? 0) ?> livres</div>
@@ -71,7 +85,7 @@
                         </td>
                         <td><?= htmlspecialchars($book['titre']) ?></td>
                         <td><?= htmlspecialchars($book['auteur']) ?></td>
-                        <td><?= htmlspecialchars($book['description']) ?></td>
+                        <td><?= htmlspecialchars(substr($book['description'], 0, 100)) ?>...</td>
                         <td>
                             <?php if ($book['disponibilité'] === 'disponible'): ?>
                                 <span class="badge-dispo"><?= htmlspecialchars($book['disponibilité']) ?></span>

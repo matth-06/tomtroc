@@ -4,7 +4,7 @@
         <h1>Nos livres à l'échange</h1>
         <form method="GET" class="search-bar">
             <input type="hidden" name="action" value="livreEx">
-            <input type="text" name="search" placeholder="Rechercher un livre..." value="<?= htmlspecialchars($search) ?>">
+            <input type="text" name="search" aria-label="Rechercher un livre" placeholder="Rechercher un livre..." value="<?= htmlspecialchars($search) ?>">
         </form>
     </div>
     <div class="books-grid">

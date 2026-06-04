@@ -43,6 +43,7 @@ class UserController extends Controller
         $_SESSION['pseudo'] = $user['nickname'];
         $_SESSION['email'] = $user['mail'];
         $_SESSION['avatar'] = $user['avatar'] ?? null;
+        $_SESSION['member_since'] = $user['member_since'] ?? null;
 
         header('Location: index.php?action=monCompte');
         exit();

@@ -7,6 +7,9 @@
         <div class="photo-section">
             <span class="photo-label">Photo</span>
             <div class="form-group">
+                <div id="image-preview" style="width: 100%; height: 100%; background-color: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; overflow: hidden;">
+                    <span style="color: #999;">Aperçu de la photo</span>
+                </div>
                 <label for="image" class="change-photo-link">ajouter une photo</label>
                 <input type="file" id="image" name="image" accept="image/*" form="edit-form" />
             </div>
@@ -39,3 +42,22 @@
         </form>
     </section>
 </section>
+
+<script>
+document.getElementById('image').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    const preview = document.getElementById('image-preview');
+    
+    if (file) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            preview.innerHTML = '<img src="' + e.target.result + '" style="width: 100%; height: 100%; object-fit: cover;" />';
+        };
+        
+        reader.readAsDataURL(file);
+    } else {
+        preview.innerHTML = '<span style="color: #999;">Aperçu de la photo</span>';
+    }
+});
+</script>

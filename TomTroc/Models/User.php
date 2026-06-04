@@ -22,7 +22,7 @@ class User
     public static function findByEmail(string $email): ?array
     {
         $pdo = DBManager::getInstance()->getPDO();
-        $stmt = $pdo->prepare('SELECT id, nickname, mail, password, avatar FROM user WHERE mail = ?');
+        $stmt = $pdo->prepare('SELECT * FROM user WHERE mail = ?');
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
@@ -32,7 +32,7 @@ class User
     public static function findById(int $id): ?array
     {
         $pdo = DBManager::getInstance()->getPDO();
-        $stmt = $pdo->prepare('SELECT id, nickname, mail, avatar FROM user WHERE id = ?');
+        $stmt = $pdo->prepare('SELECT * FROM user WHERE id = ?');
         $stmt->execute([$id]);
         $user = $stmt->fetch();
 
