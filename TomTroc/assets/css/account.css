@@ -158,6 +158,10 @@
   vertical-align: middle;
 }
 
+.account-table tbody tr:nth-child(2n) {
+  background: #eef6ff;
+}
+
 .account-table tbody tr:last-child td {
   border-bottom: none;
 }
