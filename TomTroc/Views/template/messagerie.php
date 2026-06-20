@@ -3,7 +3,7 @@
 <section class="message-container">
     <div class="messagerie-wrapper">
         <div class="conversation-list">
-            <h2>Messagerie</h2>
+            <h1>Messagerie</h1>
             <?php if (!empty($conversations)): ?>
                 <ul class="conversations-ul">
                     <?php foreach ($conversations as $conversation): ?>

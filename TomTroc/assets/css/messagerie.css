@@ -14,7 +14,7 @@
   --border:        #e2ddd4;
   --text-primary:  #1a1a1a;
   --text-secondary:#6b6560;
-  --text-muted:    #9e9890;
+  --text-muted:    rgb(46, 46, 46);
   /* --bubble-sent:   #dde8e0; */
   --bubble-sent:   #dbeeff;
   --bubble-recv:   #ffffff;
@@ -67,7 +67,7 @@
   background-color: white;
 }
 
-.conversation-list h2 {
+.conversation-list h1 {
   font-family: 'Playfair Display', serif;
   font-weight: 400;
   font-size: 1.75rem;
@@ -196,14 +196,14 @@
   gap: 16px;
 }
 
-.message-header h2 {
+.message-header h1 {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300;
   font-size: 1rem;
   color: var(--text-secondary);
 }
 
-.message-header h2 strong {
+.message-header h1 strong {
   font-weight: 500;
   color: var(--text-primary);
   font-size: 1.05rem;
@@ -399,7 +399,7 @@
     padding-top: 20px;
   }
 
-  .conversation-list h2 {
+  .conversation-list h1 {
     font-size: 1.4rem;
     padding: 0 20px 16px;
   }

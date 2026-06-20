@@ -1,16 +1,5 @@
 <?php
-$memberSince = $_SESSION['member_since'] ?? null;
-
-if ($memberSince) {
-    $start = new DateTime($memberSince);
-    $today = new DateTime();
-
-    $diff = $start->diff($today);
-
-    $anciennete = "{$diff->y} an(s) {$diff->m} mois {$diff->d} jour(s)";
-} else {
-    $anciennete = '—';
-}
+$anciennete = $_SESSION['anciennete'] ?? '—';
 ?>
 <link rel="stylesheet" href="assets/css/account.css">
 
@@ -23,10 +12,10 @@ if ($memberSince) {
                 src="<?= !empty($_SESSION['avatar']) ? htmlspecialchars($_SESSION['avatar']) : 'assets/users/default-avatar.png' ?>"
                 alt="Photo de profil"
                 class="profile-pic">
-             <div class="form-group">
-                    <label for="avatar">modifier</label>
-                    <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" form="edit-form" />
-                </div>
+            <div class="form-group">
+                <label for="avatar">modifier</label>
+                <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" form="edit-form" />
+            </div>
             <div class="separator"></div>
             <span class="username"><?= htmlspecialchars($user['nickname'] ?? ($_SESSION['pseudo'] ?? 'Utilisateur')) ?></span>
             <span class="member-since"> Membre depuis <?= htmlspecialchars($anciennete) ?> </span>
@@ -37,6 +26,12 @@ if ($memberSince) {
         </div>
 
         <div class="account-actions">
+            <?php if (!empty($successMessage)): ?>
+                <div class="alert alert-success"><?= htmlspecialchars($successMessage) ?></div>
+            <?php endif; ?>
+            <?php if (!empty($errorMessage)): ?>
+                <div class="alert alert-error"><?= htmlspecialchars($errorMessage) ?></div>
+            <?php endif; ?>
             <h2>Vos informations personnelles</h2>
             <form method="POST" action="index.php?action=updateProfile" enctype="multipart/form-data" id="edit-form">
                 <div class="form-group">
@@ -56,12 +51,7 @@ if ($memberSince) {
 
                 <button class="btn btn-outline" type="submit">Enregistrer</button>
             </form>
-            <?php if (!empty($successMessage)): ?>
-                <div class="alert alert-success"><?= htmlspecialchars($successMessage) ?></div>
-            <?php endif; ?>
-            <?php if (!empty($errorMessage)): ?>
-                <div class="alert alert-error"><?= htmlspecialchars($errorMessage) ?></div>
-            <?php endif; ?>
+
         </div>
     </div>
 

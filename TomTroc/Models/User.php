@@ -3,7 +3,15 @@
 require_once __DIR__ . '/DBManager.php';
 
 class User
-{
+{   
+    /**
+     * Creates a new user in the database.
+     *
+     * @param string $pseudo The user's nickname.
+     * @param string $email The user's email address.
+     * @param string $password The user's password.
+     * @return mixed True on success, or an error message if the user already exists.
+     */
     public static function create(string $pseudo, string $email, string $password)
     {
         $pdo = DBManager::getInstance()->getPDO();
@@ -19,6 +27,12 @@ class User
         return true;
     }
 
+    /**
+     * Finds a user by their email address.
+     *
+     * @param string $email The email address to search for.
+     * @return array|null The user data if found, or null if not found.
+     */
     public static function findByEmail(string $email): ?array
     {
         $pdo = DBManager::getInstance()->getPDO();
@@ -29,6 +43,12 @@ class User
         return $user ?: null;
     }
 
+    /**
+     * Finds a user by their ID.
+     *
+     * @param int $id The ID of the user to find.
+     * @return array|null The user data if found, or null if not found.
+     */
     public static function findById(int $id): ?array
     {
         $pdo = DBManager::getInstance()->getPDO();
@@ -39,6 +59,14 @@ class User
         return $user ?: null;
     }
 
+    /**
+     * Checks if a user exists by their email or nickname.
+     *
+     * @param string $email The email address to check.
+     * @param string $pseudo The nickname to check.
+     * @param int|null $excludeId The ID of the user to exclude from the check.
+     * @return bool True if the user exists, false otherwise.
+     */
     public static function existsByEmailOrPseudo(string $email, string $pseudo, ?int $excludeId = null): bool
     {
         $pdo = DBManager::getInstance()->getPDO();
@@ -54,6 +82,16 @@ class User
         return (bool) $stmt->fetch();
     }
 
+    /**
+     * Updates a user's information in the database.
+     *
+     * @param int $userId The ID of the user to update.
+     * @param string $newEmail The new email address.
+     * @param string $newPseudo The new nickname.
+     * @param string $newPassword The new password (optional).
+     * @param array|null $newAvatar The new avatar file (optional).
+     * @return mixed True on success, or an error message if the update fails.
+     */
     public static function update(int $userId, string $newEmail, string $newPseudo, string $newPassword = '', ?array $newAvatar = null)
     {
         $pdo = DBManager::getInstance()->getPDO();

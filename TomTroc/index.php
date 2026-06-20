@@ -64,6 +64,10 @@ try {
                 $_POST['password'] ?? ''
             );
             break;
+        case 'logout':
+            $controller = new UserController();
+            $controller->logout();
+            break;
         case 'updateProfile':
             $controller = new UserController();
             $controller->updateProfile($_POST);

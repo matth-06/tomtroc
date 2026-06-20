@@ -51,7 +51,7 @@
 .photo-label {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 12px;
-    color: #888;
+    color: rgb(46, 46, 46);
     letter-spacing: 0.04em;
     text-transform: none;
 }
@@ -98,7 +98,7 @@
 .form-group label {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 12px;
-    color: #888;
+    color: rgb(46, 46, 46);
     letter-spacing: 0.04em;
 }
 

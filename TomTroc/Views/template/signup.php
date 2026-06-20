@@ -1,7 +1,7 @@
 <div class="login">
     <form action="index.php?action=registerUser" method="post" class="foldedCorner">
         <div class="login-form">
-            <h2>Inscription</h2>
+            <h1>Inscription</h1>
             <?php if (!empty($errorMessage)): ?>
                 <div class="alert alert-error"><?= htmlspecialchars($errorMessage) ?></div>
             <?php endif; ?>
@@ -18,3 +18,4 @@
     <div class="login-media">
         <img src="assets/login/logImg.svg" alt="signup" class="signup-image">
     </div>
+</div>

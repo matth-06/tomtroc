@@ -21,7 +21,11 @@
         <div class="header-right">
             <a href="index.php?action=messagerie">Messagerie</a>
             <a href="index.php?action=monCompte">Mon compte</a>
-            <a href="index.php?action=login">Connexion</a>
+            <?php if (!empty($_SESSION['user_id'])): ?>
+                <a href="index.php?action=logout">Déconnexion</a>
+            <?php else: ?>
+                <a href="index.php?action=login">Connexion</a>
+            <?php endif; ?>
         </div>
 
     </header>
