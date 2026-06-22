@@ -7,7 +7,7 @@
             <span class="photo-label">Photo</span>
             <div id="image-preview">
                 <img src="assets/book/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['titre']) ?>" class="book-thumb">
-                </div>
+            </div>
             <div class="form-group">
                 <label for="image" class="change-photo-link">Modifier la photo</label>
                 <input type="file" id="image" name="image" accept="image/*" form="edit-form" />
@@ -41,20 +41,20 @@
     </section>
 </section>
 <script>
-document.getElementById('image').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    const preview = document.getElementById('image-preview');
-    
-    if (file) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            preview.innerHTML = '<img src="' + e.target.result + '" style="width: 100%; height: 100%; object-fit: cover;" />';
-        };
-        
-        reader.readAsDataURL(file);
-    } else {
-        preview.innerHTML = '<img src="assets/book/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['titre']) ?>" class="book-thumb">';
-    }
-});
+    document.getElementById('image').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        const preview = document.getElementById('image-preview');
+
+        if (file) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.innerHTML = '<img src="' + e.target.result + '" style="width: 100%; height: 100%; object-fit: cover;" />';
+            };
+
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '<img src="assets/book/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['titre']) ?>" class="book-thumb">';
+        }
+    });
 </script>
