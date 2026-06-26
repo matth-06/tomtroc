@@ -58,6 +58,11 @@ class UserController extends Controller
             $this->showSignup("L'adresse email n'est pas valide.", ['pseudo' => $pseudo, 'email' => $email]);
             return;
         }
+         
+        if (!preg_match('/^[a-zA-Z0-9_\-]{2,20}$/', $pseudo)) {
+        $this->showSignup("Le pseudo doit contenir 2 à 20 caractères (lettres, chiffres, - ou _).", ['pseudo' => $pseudo, 'email' => $email]);
+        return;
+        }
 
         $result = User::create(trim($pseudo), $email, trim($password));
 
@@ -80,16 +85,16 @@ class UserController extends Controller
     {
         $user = User::findByEmail(trim($email));
 
-        if (!$user || !password_verify($password, $user['password'])) {
+        if (!$user || !password_verify($password, $user->getPassword())) {
             $this->showLogin('Email ou mot de passe incorrect');
             return;
         }
 
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['pseudo'] = $user['nickname'];
-        $_SESSION['email'] = $user['mail'];
-        $_SESSION['avatar'] = $user['avatar'] ?? null;
-        $_SESSION['member_since'] = $user['member_since'] ?? null;
+        $_SESSION['user_id'] = $user->getId();
+        $_SESSION['pseudo'] = $user->getNickname();
+        $_SESSION['email'] = $user->getMail();
+        $_SESSION['avatar'] = $user->getAvatar();
+        $_SESSION['member_since'] = $user->getMemberSince();
         $_SESSION['anciennete'] = $this->calculateAnciennete($_SESSION['member_since']);
 
         header('Location: index.php?action=monCompte');
@@ -180,9 +185,9 @@ class UserController extends Controller
         if ($result === true) {
             // Recharger l'utilisateur pour récupérer les champs mis à jour (avatar notamment)
             $user = User::findById((int)$_SESSION['user_id']);
-            $_SESSION['email'] = $user['mail'] ?? $newEmail;
-            $_SESSION['pseudo'] = $user['nickname'] ?? $newPseudo;
-            $_SESSION['avatar'] = $user['avatar'] ?? ($_SESSION['avatar'] ?? null);
+            $_SESSION['email'] = $user ? $user->getMail() : $newEmail;
+            $_SESSION['pseudo'] = $user ? $user->getNickname() : $newPseudo;
+            $_SESSION['avatar'] = $user ? $user->getAvatar() : ($_SESSION['avatar'] ?? null);
             $this->account('Vos informations ont bien été mises à jour.', null);
             return;
         }

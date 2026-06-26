@@ -3,7 +3,97 @@
 require_once __DIR__ . '/DBManager.php';
 
 class User
-{   
+{
+    private $id;
+    private $nickname;
+    private $mail;
+    private $password;
+    private $avatar;
+    private $memberSince;
+
+    public function __construct(
+        int $id = 0,
+        string $nickname = '',
+        string $mail = '',
+        string $password = '',
+        ?string $avatar = null,
+        ?string $memberSince = null
+    ) {
+        $this->id = $id;
+        $this->nickname = $nickname;
+        $this->mail = $mail;
+        $this->password = $password;
+        $this->avatar = $avatar;
+        $this->memberSince = $memberSince;
+    }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            isset($data['id']) ? (int)$data['id'] : 0,
+            $data['nickname'] ?? '',
+            $data['mail'] ?? '',
+            $data['password'] ?? '',
+            $data['avatar'] ?? null,
+            $data['member_since'] ?? null
+        );
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getNickname(): string
+    {
+        return $this->nickname;
+    }
+
+    public function getMail(): string
+    {
+        return $this->mail;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function getAvatar(): ?string
+    {
+        return $this->avatar;
+    }
+
+    public function getMemberSince(): ?string
+    {
+        return $this->memberSince;
+    }
+
+    public function setNickname(string $nickname): void
+    {
+        $this->nickname = $nickname;
+    }
+
+    public function setMail(string $mail): void
+    {
+        $this->mail = $mail;
+    }
+
+    public function setPassword(string $password): void
+    {
+        $this->password = $password;
+    }
+
+    public function setAvatar(?string $avatar): void
+    {
+        $this->avatar = $avatar;
+    }
+
+    public function setMemberSince(?string $memberSince): void
+    {
+        $this->memberSince = $memberSince;
+    }
+
     /**
      * Creates a new user in the database.
      *
@@ -31,32 +121,32 @@ class User
      * Finds a user by their email address.
      *
      * @param string $email The email address to search for.
-     * @return array|null The user data if found, or null if not found.
+     * @return User|null The User object if found, or null if not found.
      */
-    public static function findByEmail(string $email): ?array
+    public static function findByEmail(string $email): ?self
     {
         $pdo = DBManager::getInstance()->getPDO();
         $stmt = $pdo->prepare('SELECT * FROM user WHERE mail = ?');
         $stmt->execute([$email]);
         $user = $stmt->fetch();
 
-        return $user ?: null;
+        return $user ? self::fromArray($user) : null;
     }
 
     /**
      * Finds a user by their ID.
      *
      * @param int $id The ID of the user to find.
-     * @return array|null The user data if found, or null if not found.
+     * @return User|null The User object if found, or null if not found.
      */
-    public static function findById(int $id): ?array
+    public static function findById(int $id): ?self
     {
         $pdo = DBManager::getInstance()->getPDO();
         $stmt = $pdo->prepare('SELECT * FROM user WHERE id = ?');
         $stmt->execute([$id]);
         $user = $stmt->fetch();
 
-        return $user ?: null;
+        return $user ? self::fromArray($user) : null;
     }
 
     /**
@@ -114,7 +204,7 @@ class User
 
         if ($newAvatar && $newAvatar['error'] === UPLOAD_ERR_OK) {
             $currentUser = self::findById($userId);
-            $currentAvatar = $currentUser['avatar'] ?? null;
+            $currentAvatar = $currentUser ? $currentUser->getAvatar() : null;
 
             $extension = pathinfo($newAvatar['name'], PATHINFO_EXTENSION);
             $filename = $userId . '_' . time() . '.' . $extension; // nom unique

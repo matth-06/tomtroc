@@ -10,12 +10,12 @@
     <div class="books-grid">
         <?php foreach ($books as $book): ?>
             <article class="book-card">
-                <a href="index.php?action=showBook&id=<?= $book['id'] ?>">
-                    <img src="assets/book/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['titre']) ?>">
+                <a href="index.php?action=showBook&id=<?= $book->getId() ?>">
+                    <img src="assets/book/<?= htmlspecialchars($book->getImage()) ?>" alt="<?= htmlspecialchars($book->getTitre()) ?>">
                     <div class="book-content">
-                        <h2><?= htmlspecialchars($book['titre']) ?></h2>
-                        <p class="book-author"><?= htmlspecialchars($book['auteur']) ?></p>
-                        <p class="book-seller">Vendu par : <?= htmlspecialchars($book['propriétaire']) ?></p>
+                        <h2><?= htmlspecialchars($book->getTitre()) ?></h2>
+                        <p class="book-author"><?= htmlspecialchars($book->getAuteur()) ?></p>
+                        <p class="book-seller">Vendu par : <?= htmlspecialchars($book->getProprietaire()) ?></p>
                     </div>
                 </a>
             </article>

@@ -17,7 +17,7 @@ $anciennete = $_SESSION['anciennete'] ?? '—';
                 <input type="file" id="avatar" name="avatar" accept="image/png, image/jpeg" form="edit-form" />
             </div>
             <div class="separator"></div>
-            <span class="username"><?= htmlspecialchars($user['nickname'] ?? ($_SESSION['pseudo'] ?? 'Utilisateur')) ?></span>
+            <span class="username"><?= htmlspecialchars($user ? $user->getNickname() : ($_SESSION['pseudo'] ?? 'Utilisateur')) ?></span>
             <span class="member-since"> Membre depuis <?= htmlspecialchars($anciennete) ?> </span>
             <div class="library-block">
                 <div class="lib-label">Bibliothèque</div>
@@ -36,7 +36,7 @@ $anciennete = $_SESSION['anciennete'] ?? '—';
             <form method="POST" action="index.php?action=updateProfile" enctype="multipart/form-data" id="edit-form">
                 <div class="form-group">
                     <label for="email">Adresse email</label>
-                    <input type="email" name="email" id="email" value="<?= htmlspecialchars($user['mail'] ?? ($_SESSION['email'] ?? '')) ?>" required>
+                    <input type="email" name="email" id="email" value="<?= htmlspecialchars($user ? $user->getMail() : ($_SESSION['email'] ?? '')) ?>" required>
                 </div>
 
                 <div class="form-group">
@@ -46,7 +46,7 @@ $anciennete = $_SESSION['anciennete'] ?? '—';
 
                 <div class="form-group">
                     <label for="pseudo">Pseudo</label>
-                    <input type="text" name="pseudo" id="pseudo" value="<?= htmlspecialchars($user['nickname'] ?? ($_SESSION['pseudo'] ?? '')) ?>" required>
+                    <input type="text" name="pseudo" id="pseudo" value="<?= htmlspecialchars($user ? $user->getNickname() : ($_SESSION['pseudo'] ?? '')) ?>" required>
                 </div>
 
                 <button class="btn btn-outline" type="submit">Enregistrer</button>
@@ -71,21 +71,21 @@ $anciennete = $_SESSION['anciennete'] ?? '—';
                 <?php foreach ($books as $book): ?>
                     <tr>
                         <td>
-                            <img src="assets/book/<?= htmlspecialchars($book['image']) ?>" alt="<?= htmlspecialchars($book['titre']) ?>" class="book-thumb">
+                            <img src="assets/book/<?= htmlspecialchars($book->getImage()) ?>" alt="<?= htmlspecialchars($book->getTitre()) ?>" class="book-thumb">
                         </td>
-                        <td><?= htmlspecialchars($book['titre']) ?></td>
-                        <td><?= htmlspecialchars($book['auteur']) ?></td>
-                        <td><?= htmlspecialchars(substr($book['description'], 0, 100)) ?>...</td>
+                        <td><?= htmlspecialchars($book->getTitre()) ?></td>
+                        <td><?= htmlspecialchars($book->getAuteur()) ?></td>
+                        <td><?= htmlspecialchars(substr($book->getDescription(), 0, 100)) ?>...</td>
                         <td>
-                            <?php if ($book['disponibilité'] === 'disponible'): ?>
-                                <span class="badge-dispo"><?= htmlspecialchars($book['disponibilité']) ?></span>
+                            <?php if ($book->getDisponibilite() === 'disponible'): ?>
+                                <span class="badge-dispo"><?= htmlspecialchars($book->getDisponibilite()) ?></span>
                             <?php else: ?>
-                                <span class="badge-indispo"><?= htmlspecialchars($book['disponibilité']) ?></span>
+                                <span class="badge-indispo"><?= htmlspecialchars($book->getDisponibilite()) ?></span>
                             <?php endif; ?>
                         </td>
                         <td>
-                            <a href="index.php?action=edit&id=<?= (int)$book['id'] ?>" class="btn-edit">Éditer</a>
-                            <a href="index.php?action=delete&id=<?= (int)$book['id'] ?>" class="btn-delete" onclick="return confirm('Supprimer ce livre ?')">Supprimer</a>
+                            <a href="index.php?action=edit&id=<?= (int)$book->getId() ?>" class="btn-edit">Éditer</a>
+                            <a href="index.php?action=delete&id=<?= (int)$book->getId() ?>" class="btn-delete" onclick="return confirm('Supprimer ce livre ?')">Supprimer</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

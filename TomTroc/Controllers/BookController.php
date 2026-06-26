@@ -44,7 +44,7 @@ class BookController extends Controller
             exit();
         }
 
-        $title = $book['titre'] ?? 'Livre';
+        $title = $book->getTitre() ?: 'Livre';
         $this->render('template/detailLivre.php', compact('title', 'book'));
     }
 
@@ -109,7 +109,7 @@ class BookController extends Controller
             exit();
         }
 
-        $title = 'Modifier le livre';
+        $title = $book->getTitre() ?: 'Modifier le livre';
         $this->render('template/editBook.php', compact('title', 'book'));
     }
 
@@ -130,7 +130,7 @@ class BookController extends Controller
             exit();
         }
 
-        $imageName = $book['image'];
+        $imageName = $book->getImage();
         $newImage = $this->uploadImage($files['image'] ?? null, $imageName);
         if ($newImage !== null) {
             $imageName = $newImage;
@@ -160,7 +160,7 @@ class BookController extends Controller
         $book = Book::find($id);
 
         if ($book) {
-            $image = $book['image'] ?? '';
+            $image = $book->getImage();
             if (!empty($image)) {
                 $uploadDir = __DIR__ . '/../assets/book/';
                 $oldFile = $uploadDir . $image;

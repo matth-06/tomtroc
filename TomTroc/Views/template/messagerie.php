@@ -43,12 +43,12 @@
                 <div class="messages-list">
                     <?php if (!empty($messages)): ?>
                         <?php foreach ($messages as $message): ?>
-                            <div class="message-item <?= $message['sender_id'] === $_SESSION['user_id'] ? 'sent' : 'received' ?>">
+                            <div class="message-item <?= $message->getSenderId() === $_SESSION['user_id'] ? 'sent' : 'received' ?>">
                                 <div class="message-content">
                                     <span class="message-time">
-                                        <?= date('d/m/Y H:i', strtotime($message['created_at'])) ?>
+                                        <?= date('d/m/Y H:i', strtotime($message->getCreatedAt())) ?>
                                     </span>
-                                    <p><?= htmlspecialchars($message['content']) ?></p>
+                                    <p><?= htmlspecialchars($message->getContent()) ?></p>
                                 </div>
                             </div>
                         <?php endforeach; ?>

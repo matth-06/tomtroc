@@ -158,7 +158,6 @@ button {
 
 .book-card {
     background-color: #fff;
-    border-radius: 24px;
     overflow: hidden;
     box-shadow: 0 18px 50px rgba(0,0,0,0.05);
     max-width: 302px;
