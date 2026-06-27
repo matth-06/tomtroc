@@ -7,20 +7,20 @@
             <?php if (!empty($conversations)): ?>
                 <ul class="conversations-ul">
                     <?php foreach ($conversations as $conversation): ?>
-                        <li class="conversation-item <?= isset($currentConversation) && $currentConversation['id'] == $conversation['id'] ? 'active' : '' ?>">
-                            <a href="index.php?action=messagerie&user_id=<?= (int)$conversation['id'] ?>">
+                        <li class="conversation-item <?= isset($currentConversation) && $currentConversation->getId() == $conversation->getId() ? 'active' : '' ?>">
+                            <a href="index.php?action=messagerie&user_id=<?= (int)$conversation->getId() ?>">
                                 <div class="user-name">
-                                    <img src="<?= !empty($conversation['avatar']) ? htmlspecialchars($conversation['avatar']) : 'assets/users/default-avatar.png' ?>"
+                                    <img src="<?= !empty($conversation->getAvatar()) ? htmlspecialchars($conversation->getAvatar()) : 'assets/users/default-avatar.png' ?>"
                                         alt="Photo de profil"
                                         class="owner-avatar">
                                     <div class="conv-info">
                                         <div style="display:flex; align-items:center; gap:8px; width:100%">
-                                            <div class="conv-name"><?= htmlspecialchars($conversation['nickname']) ?></div>
-                                            <?php if (!empty($conversation['last_time'])): ?>
-                                                <div class="conv-time" style="margin-left:auto; font-size:0.75rem; color:var(--text-muted)"><?= date('H:i', strtotime($conversation['last_time'])) ?></div>
+                                            <div class="conv-name"><?= htmlspecialchars($conversation->getNickname()) ?></div>
+                                            <?php if (!empty($conversation->getLastTime())): ?>
+                                                <div class="conv-time" style="margin-left:auto; font-size:0.75rem; color:var(--text-muted)"><?= date('H:i', strtotime($conversation->getLastTime())) ?></div>
                                             <?php endif; ?>
                                         </div>
-                                        <div class="conv-preview"><?= htmlspecialchars(mb_strimwidth($conversation['last_message'], 0, 60, '...')) ?></div>
+                                        <div class="conv-preview"><?= htmlspecialchars(mb_strimwidth($conversation->getLastMessage(), 0, 60, '...')) ?></div>
                                     </div>
                                 </div>
                             </a>
@@ -35,15 +35,15 @@
         <div class="message-section">
             <?php if (isset($currentConversation) && $currentConversation): ?>
                 <div class="message-header">
-                    <img src="<?= !empty($currentConversation['avatar']) ? htmlspecialchars($currentConversation['avatar']) : 'assets/users/default-avatar.png' ?>"
+                    <img src="<?= !empty($currentConversation->getAvatar()) ? htmlspecialchars($currentConversation->getAvatar()) : 'assets/users/default-avatar.png' ?>"
                         alt="Photo de profil"
-                        class="owner-avatar"><strong><?= htmlspecialchars($currentConversation['nickname']) ?></strong>
+                        class="owner-avatar"><strong><?= htmlspecialchars($currentConversation->getNickname()) ?></strong>
                 </div>
 
                 <div class="messages-list">
                     <?php if (!empty($messages)): ?>
                         <?php foreach ($messages as $message): ?>
-                            <div class="message-item <?= $message->getSenderId() === $_SESSION['user_id'] ? 'sent' : 'received' ?>">
+                            <div class="message-item <?= $message->getSenderId() === $currentUserId ? 'sent' : 'received' ?>">
                                 <div class="message-content">
                                     <span class="message-time">
                                         <?= date('d/m/Y H:i', strtotime($message->getCreatedAt())) ?>
@@ -57,7 +57,7 @@
                     <?php endif; ?>
                 </div>
 
-                <form method="POST" action="index.php?action=sendMessage&receiver_id=<?= (int)$currentConversation['id'] ?>" class="message-form">
+                <form method="POST" action="index.php?action=sendMessage&receiver_id=<?= (int)$currentConversation->getId() ?>" class="message-form">
                     <div class="form-group-message">
                         <textarea
                             name="content"

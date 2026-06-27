@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../Models/Message.php';
-require_once __DIR__ . '/../Models/DBManager.php';
+require_once __DIR__ . '/../Models/MessageRepository.php';
 require_once __DIR__ . '/Controller.php';
 
 class MessageController extends Controller
@@ -22,7 +22,8 @@ class MessageController extends Controller
             exit();
         }
 
-        Message::create($senderId, $receiverId, trim($content));
+        $repository = new MessageRepository();
+        $repository->create($senderId, $receiverId, trim($content));
         header('Location: index.php?action=messagerie&user_id=' . $receiverId);
         exit();
     }
@@ -41,26 +42,22 @@ class MessageController extends Controller
         $title = 'Messagerie';
         
         // Get all conversations for this user
-        $conversations = Message::getConversations($userId);
+        $repository = new MessageRepository();
+        $conversations = $repository->getConversations($userId);
         
         $messages = [];
         $currentConversation = null;
         
         // If a specific conversation is selected
         if ($otherUserId) {
-            $messages = Message::getConversation($userId, $otherUserId);
+            $messages = $repository->getConversation($userId, $otherUserId);
             
-            // Mark messages as read
-            Message::markAsRead($userId, $otherUserId);
-            
-            // Get current conversation user info
-            $pdo = DBManager::getInstance()->getPDO();
-            $stmt = $pdo->prepare('SELECT id, nickname, avatar FROM user WHERE id = ?');
-            $stmt->execute([$otherUserId]);
-            $currentConversation = $stmt->fetch();
+            $repository->markAsRead($userId, $otherUserId);
+            $currentConversation = $repository->findConversationUser($userId, $otherUserId);
         }
 
-        $this->render('template/messagerie.php', compact('title', 'conversations', 'messages', 'currentConversation'));
+        $currentUserId = $userId;
+        $this->render('template/messagerie.php', compact('title', 'conversations', 'messages', 'currentConversation', 'currentUserId'));
     }
 }
 ?>

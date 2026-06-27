@@ -6,9 +6,9 @@
                 <div class="alert alert-error"><?= htmlspecialchars($errorMessage) ?></div>
             <?php endif; ?>
             <label for="pseudo">Pseudo</label>
-            <input type="text" name="pseudo" id="pseudo" value="<?= htmlspecialchars($oldData['pseudo'] ?? '') ?>" required>
+            <input type="text" name="pseudo" id="pseudo" value="<?= htmlspecialchars(isset($oldData) && $oldData instanceof SignupFormData ? $oldData->getPseudo() : '') ?>" required>
             <label for="email">Adresse email</label>
-            <input type="email" name="email" id="email" value="<?= htmlspecialchars($oldData['email'] ?? '') ?>" required>
+            <input type="email" name="email" id="email" value="<?= htmlspecialchars(isset($oldData) && $oldData instanceof SignupFormData ? $oldData->getEmail() : '') ?>" required>
             <label for="password">Mot de passe</label>
             <input type="password" name="password" id="password" required>
             <button class="btn btn-primary login-btn" type="submit">S'inscrire</button>

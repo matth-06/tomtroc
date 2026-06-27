@@ -3,6 +3,8 @@
 require_once __DIR__ . '/Controller.php';
 require_once __DIR__ . '/AuthService.php';
 require_once __DIR__ . '/../Models/User.php';
+require_once __DIR__ . '/../Models/UserRepository.php';
+require_once __DIR__ . '/../Models/SignupFormData.php';
 require_once __DIR__ . '/../Models/Book.php';
 
 class UserController extends Controller
@@ -36,7 +38,7 @@ class UserController extends Controller
      * @param array $oldData Optional old data to pre-fill the form.
      * @return void
      */
-    public function showSignup(?string $errorMessage = null, array $oldData = []): void
+    public function showSignup(?string $errorMessage = null, ?SignupFormData $oldData = null): void
     {
         $title = 'Inscription';
         $this->render('template/signup.php', compact('title', 'errorMessage', 'oldData'));
@@ -55,23 +57,24 @@ class UserController extends Controller
         $email = trim($email);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $this->showSignup("L'adresse email n'est pas valide.", ['pseudo' => $pseudo, 'email' => $email]);
+            $this->showSignup("L'adresse email n'est pas valide.", new SignupFormData($pseudo, $email));
             return;
         }
          
         if (!preg_match('/^[a-zA-Z0-9_\-]{2,20}$/', $pseudo)) {
-        $this->showSignup("Le pseudo doit contenir 2 à 20 caractères (lettres, chiffres, - ou _).", ['pseudo' => $pseudo, 'email' => $email]);
+        $this->showSignup("Le pseudo doit contenir 2 à 20 caractères (lettres, chiffres, - ou _).", new SignupFormData($pseudo, $email));
         return;
         }
 
-        $result = User::create(trim($pseudo), $email, trim($password));
+        $repository = new UserRepository();
+        $result = $repository->create(trim($pseudo), $email, trim($password));
 
         if ($result === true) {
             header('Location: index.php?action=login');
             exit();
         }
 
-        $this->showSignup($result, ['pseudo' => $pseudo, 'email' => $email]);
+        $this->showSignup($result, new SignupFormData($pseudo, $email));
     }
 
     /**
@@ -83,7 +86,8 @@ class UserController extends Controller
      */
     public function connect(string $email, string $password): void
     {
-        $user = User::findByEmail(trim($email));
+        $repository = new UserRepository();
+        $user = $repository->findByEmail(trim($email));
 
         if (!$user || !password_verify($password, $user->getPassword())) {
             $this->showLogin('Email ou mot de passe incorrect');
@@ -131,7 +135,8 @@ class UserController extends Controller
     {
         $this->authService->ensureAuthenticated();
 
-        $user = User::findById((int)$_SESSION['user_id']);
+        $repository = new UserRepository();
+        $user = $repository->findById((int)$_SESSION['user_id']);
         $books = Book::findByUser((int)$_SESSION['user_id']);
         $bookCount = count($books);
         $title = 'Mon compte';
@@ -180,11 +185,13 @@ class UserController extends Controller
             return;
         }
 
-        $result = User::update((int)$_SESSION['user_id'], $newEmail, $newPseudo, $newPassword, $newAvatar);
+        $repository = new UserRepository();
+        $result = $repository->update((int)$_SESSION['user_id'], $newEmail, $newPseudo, $newPassword, $newAvatar);
 
         if ($result === true) {
             // Recharger l'utilisateur pour récupérer les champs mis à jour (avatar notamment)
-            $user = User::findById((int)$_SESSION['user_id']);
+            $repository = new UserRepository();
+            $user = $repository->findById((int)$_SESSION['user_id']);
             $_SESSION['email'] = $user ? $user->getMail() : $newEmail;
             $_SESSION['pseudo'] = $user ? $user->getNickname() : $newPseudo;
             $_SESSION['avatar'] = $user ? $user->getAvatar() : ($_SESSION['avatar'] ?? null);
