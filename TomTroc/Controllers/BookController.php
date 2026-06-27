@@ -3,6 +3,7 @@
 require_once __DIR__ . '/Controller.php';
 require_once __DIR__ . '/AuthService.php';
 require_once __DIR__ . '/../Models/Book.php';
+require_once __DIR__ . '/../Models/BookRepository.php';
 
 class BookController extends Controller
 {
@@ -25,7 +26,8 @@ class BookController extends Controller
     public function index(string $search = ''): void
     {
         $title = 'Nos livres à l\'échange';
-        $books = Book::search($search);
+        $repository = new BookRepository();
+        $books = $repository->search($search);
         $this->render('template/livreEx.php', compact('title', 'books', 'search'));
     }
 
@@ -37,7 +39,8 @@ class BookController extends Controller
      */
     public function show(int $id): void
     {
-        $book = Book::find($id);
+        $repository = new BookRepository();
+        $book = $repository->find($id);
 
         if (!$book) {
             header('Location: index.php');
@@ -79,7 +82,8 @@ class BookController extends Controller
         $imageName = $this->uploadImage($files['image'] ?? null);
         $imageName = $imageName ?? '';
 
-        Book::create(
+        $repository = new BookRepository();
+        $repository->create(
             trim($post['title'] ?? ''),
             trim($post['author'] ?? ''),
             trim($post['description'] ?? ''),
@@ -102,7 +106,8 @@ class BookController extends Controller
     {
         $this->authService->ensureAuthenticated();
 
-        $book = Book::find($id);
+        $repository = new BookRepository();
+        $book = $repository->find($id);
 
         if (!$book) {
             header('Location: index.php');
@@ -123,7 +128,8 @@ class BookController extends Controller
      */
     public function update(int $id, array $post, array $files): void
     {
-        $book = Book::find($id);
+        $repository = new BookRepository();
+        $book = $repository->find($id);
 
         if (!$book) {
             header('Location: index.php');
@@ -136,7 +142,8 @@ class BookController extends Controller
             $imageName = $newImage;
         }
 
-        Book::update(
+        $repository = new BookRepository();
+        $repository->update(
             $id,
             trim($post['title'] ?? ''),
             trim($post['author'] ?? ''),
@@ -157,7 +164,8 @@ class BookController extends Controller
      */
     public function delete(int $id): void
     {
-        $book = Book::find($id);
+        $repository = new BookRepository();
+        $book = $repository->find($id);
 
         if ($book) {
             $image = $book->getImage();
@@ -170,7 +178,8 @@ class BookController extends Controller
             }
         }
 
-        Book::delete($id);
+        $repository->delete($id);
+        $repository->delete($id);
         header('Location: index.php?action=monCompte');
         exit();
     }

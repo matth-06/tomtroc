@@ -1,10 +1,10 @@
 <?php
 
 require_once __DIR__ . '/Controller.php';
-require_once __DIR__ . '/../Models/Book.php';
+require_once __DIR__ . '/../Models/BookRepository.php';
 
 class HomeController extends Controller
-{   
+{
     /**
      * Displays the home page with the latest books.
      *
@@ -13,7 +13,8 @@ class HomeController extends Controller
     public function index(): void
     {
         $title = 'Accueil';
-        $latestBooks = Book::getLatest(4);
+        $repository = new BookRepository();
+        $latestBooks = $repository->getLatest(4);
         $this->render('home.php', compact('title', 'latestBooks'));
     }
 

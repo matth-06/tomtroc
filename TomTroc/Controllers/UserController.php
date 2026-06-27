@@ -5,7 +5,7 @@ require_once __DIR__ . '/AuthService.php';
 require_once __DIR__ . '/../Models/User.php';
 require_once __DIR__ . '/../Models/UserRepository.php';
 require_once __DIR__ . '/../Models/SignupFormData.php';
-require_once __DIR__ . '/../Models/Book.php';
+require_once __DIR__ . '/../Models/BookRepository.php';
 
 class UserController extends Controller
 {
@@ -137,7 +137,8 @@ class UserController extends Controller
 
         $repository = new UserRepository();
         $user = $repository->findById((int)$_SESSION['user_id']);
-        $books = Book::findByUser((int)$_SESSION['user_id']);
+        $bookRepository = new BookRepository();
+        $books = $bookRepository->findByUser((int)$_SESSION['user_id']);
         $bookCount = count($books);
         $title = 'Mon compte';
 
